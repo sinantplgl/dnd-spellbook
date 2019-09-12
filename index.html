@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Spell Card Generator</title>
+        <meta name="description" content="The HTML5 Herald">
+        <meta name="author" content="SitePoint">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+    </head>
+
+    <body>
+        Name:<br>
+        <input type="text" data-bind="textInput: name" placeholder="Spell Name"></input>
+        <br><br>
+        Level: <select data-bind="options: levelList, value: level"></select> School:<select data-bind="options: schoolList, value: school"></select><br>
+        <br>
+        Casting Time:<select data-bind="options: timeList, value: time"></select><input type="text" data-bind="textInput: timeDesc, visible: (time() == 'other')" placeholder="Casting Time"></input><br>
+        <br>
+        Range: <input type="text" data-bind="textInput: range" placeholder="Range"></input>
+        <br><br>
+        Components:<br>
+        <input type="checkbox" data-bind="checked: verbal"></input>Verbal<br>
+        <input type="checkbox" data-bind="checked: somantic"></input>Somantic<br>
+        <input type="checkbox" data-bind="checked: material"></input>Material <input type="text" data-bind="textInput: materialDesc, visible: material" placeholder="Materials"></input><br>
+        <br>
+        Duration:<input type="checkbox" data-bind="checked: concentration"></input>Concentration <input type="text" data-bind="textInput: durationDesc" placeholder="Duration"></input><br>
+        <br>
+        Class:<br>
+        <select data-bind="options: classList, selectedOptions: selectedClasses" multiple="true"></select><br>
+        <br>
+        Description:<br>
+        <textarea type="" data-bind="textInput: description" placeholder="Description..."></textarea>
+        <br><br>
+        
+        <button data-bind="click: addSpell">Add Spell</button><br><br>
+
+        Name: <span data-bind="text: name"></span>
+        <br>
+        Subtitle: <span data-bind="text: subtitle"></span>
+        <br>
+        Casting Time: <span data-bind="text: castingTime"></span>
+        <br>
+        Range: <span data-bind="text: range"></span>
+        <br>
+        Components: <span data-bind="text: components"></span>
+        <br>
+        Duration: <span data-bind="text: duration"></span>
+        <br>
+        Description: <span data-bind="text: description"></span>
+        <br>
+        Classes: <span data-bind="text: classes"></span>
+        <br><br>
+        <table data-bind="visible: spellList().length > 0">
+            <thead>
+                <tr><th>Spell Name</th><th>description</th><th>Action</th></tr>
+            </thead>
+            <tbody data-bind="foreach: spellList">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: description"></td>
+                    <td data-bind="click: $parent.removeSpell">Remove</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script src="js/jquery-3.4.1.js"></script>
+        <script src="js/popper.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="js/knockout-3.5.0.js"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
