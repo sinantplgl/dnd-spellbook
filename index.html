@@ -9,67 +9,114 @@
         <meta name="author" content="SitePoint">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+        <link rel="stylesheet" href="css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/styles.css">
     </head>
 
     <body>
-        Name:<br>
-        <input type="text" data-bind="textInput: name" placeholder="Spell Name"></input>
-        <br><br>
-        Level: <select data-bind="options: levelList, value: level"></select> School:<select data-bind="options: schoolList, value: school"></select><br>
-        <br>
-        Casting Time:<select data-bind="options: timeList, value: time"></select><input type="text" data-bind="textInput: timeDesc, visible: (time() == 'other')" placeholder="Casting Time"></input><br>
-        <br>
-        Range: <input type="text" data-bind="textInput: range" placeholder="Range"></input>
-        <br><br>
-        Components:<br>
-        <input type="checkbox" data-bind="checked: verbal"></input>Verbal<br>
-        <input type="checkbox" data-bind="checked: somantic"></input>Somantic<br>
-        <input type="checkbox" data-bind="checked: material"></input>Material <input type="text" data-bind="textInput: materialDesc, visible: material" placeholder="Materials"></input><br>
-        <br>
-        Duration:<input type="checkbox" data-bind="checked: concentration"></input>Concentration <input type="text" data-bind="textInput: durationDesc" placeholder="Duration"></input><br>
-        <br>
-        Class:<br>
-        <select data-bind="options: classList, selectedOptions: selectedClasses" multiple="true"></select><br>
-        <br>
-        Description:<br>
-        <textarea type="" data-bind="textInput: description" placeholder="Description..."></textarea>
-        <br><br>
-        
-        <button data-bind="click: addSpell">Add Spell</button><br><br>
-
-        Name: <span data-bind="text: name"></span>
-        <br>
-        Subtitle: <span data-bind="text: subtitle"></span>
-        <br>
-        Casting Time: <span data-bind="text: castingTime"></span>
-        <br>
-        Range: <span data-bind="text: range"></span>
-        <br>
-        Components: <span data-bind="text: components"></span>
-        <br>
-        Duration: <span data-bind="text: duration"></span>
-        <br>
-        Description: <span data-bind="text: description"></span>
-        <br>
-        Classes: <span data-bind="text: classes"></span>
-        <br><br>
-        <table data-bind="visible: spellList().length > 0">
-            <thead>
-                <tr><th>Spell Name</th><th>description</th><th>Action</th></tr>
-            </thead>
-            <tbody data-bind="foreach: spellList">
-                <tr>
-                    <td data-bind="text: name"></td>
-                    <td data-bind="text: description"></td>
-                    <td data-bind="click: $parent.removeSpell">Remove</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#customSpellForm" aria-expanded="false" aria-controls="customSpellForm">
+                        Add Custom Spell
+                    </button>
+                    <div class="collapse" id="customSpellForm">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label>Spell Name</label>
+                                        <input class="form-control" type="text" data-bind="textInput: title" placeholder="Spell name"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Level</label>
+                                        <select class="form-control level-picker" data-bind="options: levelList, 
+                                                                                            optionsText: 'levelName',
+                                                                                            optionsValue: 'value',
+                                                                                            value: level"></select>
+                                        <label>School</label>
+                                        <select class="form-control school-picker" data-bind="options: schoolList, value: school"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Casting Time</label>
+                                        <select class="form-control cast-time-picker" data-bind="options: timeList, value: time"></select>
+                                        <input class="form-control" type="text" data-bind="textInput: timeDesc, visible: (time() == 'other')" placeholder="Casting Time"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Range</label>
+                                        <input class="form-control" type="text" data-bind="textInput: range" placeholder="Range"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Components</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" data-bind="checked: verbal"></input>
+                                            <label class="form-check-label">Verbal</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" data-bind="checked: somantic"></input>
+                                            <label class="form-check-label">Somantic</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" data-bind="checked: material"></input>
+                                            <label class="form-check-label">Material</label>
+                                        </div>
+                                        <input class="form-control" type="text" data-bind="textInput: materialDesc, visible: material" placeholder="Materials"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Duration</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" data-bind="checked: concentration"></input>
+                                            <label class="form-check-label">Concentration</label>
+                                        </div>
+                                        <input class="form-control" type="text" data-bind="textInput: durationDesc" placeholder="Duration"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Class</label>
+                                        <select class="form-control class-picker" data-bind="options: classList, selectedOptions: selectedClasses" multiple></select><br>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea class="form-control" data-bind="textInput: description" placeholder="Description..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>At Higher Levels</label>
+                                        <textarea class="form-control" data-bind="textInput: higherLevels" placeholder="Description..."></textarea>
+                                    </div>
+                                </form>
+                                <button class="btn btn-primary" data-bind="click: addSpell">Add Spell</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table data-bind="visible: spellList().length > 0" class="table table-striped table-dark">
+                                <thead>
+                                    <tr><th>Spell Name</th><th>Type</th><th>Casting Time</th><th>Components</th><th></th></tr>
+                                </thead>
+                                <tbody data-bind="foreach: spellList">
+                                    <tr>
+                                        <td data-bind="text: title"></td>
+                                        <td data-bind="text: type"></td>
+                                        <td data-bind="text: castingTime"></td>
+                                        <td data-bind="text: components"></td>
+                                        <td data-bind="click: $parent.removeSpell">Remove</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="js/jquery-3.4.1.js"></script>
         <script src="js/popper.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="js/bootstrap-select.min.js"></script>
         <script src="js/knockout-3.5.0.js"></script>
         <script src="js/scripts.js"></script>
     </body>
