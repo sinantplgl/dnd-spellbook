@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./built/",
+        "allowJs": true,
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "module": "amd",
+        "target": "es6"
+    },
+    "files": [
+        "./src/require-config.ts",
+        "./src/spell-list.ts"
+    ], 
+    "include": [
+        "./src/**/*"
+    ]
+}

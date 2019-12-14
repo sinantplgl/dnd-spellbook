@@ -1,0 +1,20 @@
+{
+  "name": "dndspellcards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "classes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bootstrap": "^4.3.1",
+    "@types/bootstrap-select": "^1.11.1",
+    "@types/datatables.net": "^1.10.17",
+    "@types/jquery": "^3.3.31",
+    "@types/knockout": "^3.4.66",
+    "@types/popper.js": "^1.11.0",
+    "datatables.net-bs4": "^1.10.19"
+  }
+}

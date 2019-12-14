@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="css/bootstrap-select.min.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
         <link rel="stylesheet" href="css/styles.css">
     </head>
 
@@ -93,13 +94,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table data-bind="visible: spellList().length > 0" class="table table-striped table-dark">
+                            <table data-bind="visible: spellList().length > 0" class="table table-striped table-dark" id="spellListTable">
                                 <thead>
                                     <tr><th>Spell Name</th><th>Type</th><th>Casting Time</th><th>Components</th><th></th></tr>
                                 </thead>
                                 <tbody data-bind="foreach: spellList">
                                     <tr>
-                                        <td data-bind="text: title"></td>
+                                        <td data-bind="text: name"></td>
                                         <td data-bind="text: type"></td>
                                         <td data-bind="text: castingTime"></td>
                                         <td data-bind="text: components"></td>
@@ -112,12 +113,10 @@
                 </div>
             </div>
         </div>
-
-        <script src="js/jquery-3.4.1.js"></script>
-        <script src="js/popper.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="js/bootstrap-select.min.js"></script>
-        <script src="js/knockout-3.5.0.js"></script>
-        <script src="js/scripts.js"></script>
+        <script src="./externals/require.js"></script>
+        <script src="./built/require-config.js"></script>
+        <script>
+            require(["built/spell-list"])
+        </script>
     </body>
 </html>
