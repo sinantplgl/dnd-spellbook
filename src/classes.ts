@@ -39,47 +39,71 @@ export class Duration{
     }
 }
 
+interface SpellProps{
+    name?: string
+    
+    level?: number
+    school?: string
+    
+    time?: Time[]
+
+    range?: any
+
+    components?: object
+    materials?: string
+
+    duration?: Duration[]
+
+    entries?: any
+    higherLevel?: any
+
+    classes?: string[]
+    
+    source?: any
+    page?: number
+}
+
 export class Spell{
-    name: KnockoutObservable<String>
+    name: KnockoutObservable<string>
     
     level: KnockoutObservable<Number>
-    school: KnockoutObservable<String>
-    type: KnockoutComputed<String>
+    school: KnockoutObservable<string>
+    type: KnockoutComputed<string>
     
     time: KnockoutObservableArray<Time>
-    castingTime: KnockoutComputed<String>
+    castingTime: KnockoutComputed<string>
 
     range: KnockoutObservable<any>
 
-    components: KnockoutObservable<any>
-    materials: KnockoutObservable<String>
+    components: KnockoutObservable<object>
+    materials: KnockoutObservable<string>
 
     duration: KnockoutObservableArray<Duration>
 
     entries: KnockoutObservableArray<any>
     higherLevel: KnockoutObservableArray<any>
 
-    classes: KnockoutObservableArray<String>
+    classes: KnockoutObservableArray<string>
     
     source: KnockoutObservable<any>
     page: KnockoutObservable<Number>
 
-    constructor(params: any = {}){
+    constructor(params: SpellProps){
         let self = this
         
-        this.name = ko.observable(this.getValue(params.name))
-        this.level = ko.observable(this.getValue(params.level))
-        this.school = ko.observable(this.getValue(params.school))
-        this.time = ko.observableArray(this.getValue(params.time))
-        this.range = ko.observable(this.getValue(params.range))
-        this.components = ko.observable(this.getValue(params.components))
-        this.materials = ko.observable(this.getValue(params.materials))
-        this.duration = ko.observableArray(this.getValue(params.duration))
-        this.entries = ko.observableArray(this.getValue(params.entries))
-        this.higherLevel = ko.observableArray(this.getValue(params.higherLevel))
-        this.classes = ko.observableArray(this.getValue(params.classes))
-        this.source = ko.observable(this.getValue(params.source))
-        this.page = ko.observable(this.getValue(params.page))
+        this.name = ko.observable(params.name)
+        this.level = ko.observable(params.level)
+        this.school = ko.observable(params.school)
+        this.time = ko.observableArray(params.time)
+        this.range = ko.observable(params.range)
+        this.components = ko.observable(params.components)
+        this.materials = ko.observable(params.materials)
+        this.duration = ko.observableArray(params.duration)
+        this.entries = ko.observableArray(params.entries)
+        this.higherLevel = ko.observableArray(params.higherLevel)
+        this.classes = ko.observableArray(params.classes)
+        this.source = ko.observable(params.source)
+        this.page = ko.observable(params.page)
 
         this.type = ko.computed(() => {
             if (self.level() == 0)

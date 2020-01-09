@@ -1,15 +1,13 @@
 import "bootstrap-select"
 import "datatables.net"
 import * as ko from "knockout"
-import {Spell} from "./classes"
-import {Time} from "./classes"
-import {Duration} from "./classes"
+import { Spell, Time, Duration } from "./classes"
 
 var getValue = function (val: any) {
     return ko.isObservable(val) ? val() : val
 }
 
-class SpellViewModel{
+class SpellViewModel {
     title: KnockoutObservable<string>
     level: KnockoutObservable<Number>
     levelList: KnockoutObservableArray<any>
@@ -35,10 +33,10 @@ class SpellViewModel{
     classes: KnockoutComputed<string>
     selectedClasses: KnockoutObservableArray<string>
     spellList: KnockoutObservableArray<Spell>
-    
-    constructor(){
+
+    constructor() {
         let self = this
-        
+
         this.title = ko.observable("")
         this.level = ko.observable()
         this.schoolList = ko.observableArray(['Abjuration', 'Conjuration', 'Divination', 'Enchantment', 'Evocation', 'Illusion', 'Necromancy', 'Transmutation'])
@@ -62,62 +60,66 @@ class SpellViewModel{
         $.ajax({
             dataType: 'json',
             url: 'spells.json',
-            success: function(data){
-                self.spellList($.map(data, function(val, i) {
+            success: function (data) {
+                self.spellList($.map(data, function (val, i) {
                     return new Spell({
                         name: val.name,
                         level: val.level,
                         school: self.parseSchoolName(val.school),
                         time: self.parseTimeArray(val.time),
-                        duration: self.parseDuration(val.duration)
+                        duration: self.parseDuration(val.duration),
+                        components: self.parseComponents(val.components),
+                        materials: self.parseMaterials(val.components),
+                        source: val.source,
+                        page: val.page
                     })
                 }))
             }
         })
         this.title = ko.observable("")
-    
+
         this.levelList = ko.observableArray(
             [
-                {value: 0, levelName: 'Cantrip'},
-                {value: 1, levelName: '1st level'},
-                {value: 2, levelName: '2nd level'},
-                {value: 3, levelName: '3rd level'},
-                {value: 4, levelName: '4th level'},
-                {value: 5, levelName: '5th level'},
-                {value: 6, levelName: '6th level'},
-                {value: 7, levelName: '7th level'},
-                {value: 8, levelName: '8th level'},
-                {value: 9, levelName: '9th level'}
+                { value: 0, levelName: 'Cantrip' },
+                { value: 1, levelName: '1st level' },
+                { value: 2, levelName: '2nd level' },
+                { value: 3, levelName: '3rd level' },
+                { value: 4, levelName: '4th level' },
+                { value: 5, levelName: '5th level' },
+                { value: 6, levelName: '6th level' },
+                { value: 7, levelName: '7th level' },
+                { value: 8, levelName: '8th level' },
+                { value: 9, levelName: '9th level' }
             ]
         )
         /***** Computed Values *****/
         //Component List
-        this.components = ko.computed(function() {
+        this.components = ko.computed(function () {
             var result = ''
-            if(self.verbal()){
+            if (self.verbal()) {
                 result += 'V'
-                if(self.somantic()){
+                if (self.somantic()) {
                     result += ', S'
-                    if(self.material())
+                    if (self.material())
                         result += ', M (' + self.materialDesc() + ')'
                 }
-                else{
-                    if(self.material())
+                else {
+                    if (self.material())
                         result += ', M (' + self.materialDesc() + ')'
                 }
             }
-            else{
-                if(self.somantic()){
+            else {
+                if (self.somantic()) {
                     result += 'S'
-                    if(self.material())
+                    if (self.material())
                         result += ', M (' + self.materialDesc() + ')'
                 }
-                else{
-                    if(self.material())
+                else {
+                    if (self.material())
                         result += 'M (' + self.materialDesc() + ')'
                 }
             }
-            return result                  
+            return result
         })
         //Class List
         this.classes = ko.pureComputed(function () {
@@ -131,51 +133,51 @@ class SpellViewModel{
     }
 
     public addSpell = () => {
-        this.spellList.push(new Spell({
-            level: this.level,
-            school: this.school,
-            title: this.title,
-            type: this.type,
-            castingTime: this.castingTime,
-            range: this.range,
-            components: this.components,
-            duration: this.duration,
-            description: this.description,
-            higherLevels: this.higherLevels,
-            classes: this.classes
-        }))
-    }
-    
-    public removeSpell = (spell: Spell) => {
-        this.spellList.remove(spell)        
+        // this.spellList.push(new Spell({
+        //     level: this.level,
+        //     school: this.school,
+        //     title: this.title,
+        //     type: this.type,
+        //     castingTime: this.castingTime,
+        //     range: this.range,
+        //     components: this.components,
+        //     duration: this.duration,
+        //     description: this.description,
+        //     higherLevels: this.higherLevels,
+        //     classes: this.classes
+        // }))
     }
 
-    private parseSchoolName = (school : String) : String => {
+    public removeSpell = (spell: Spell) => {
+        this.spellList.remove(spell)
+    }
+
+    private parseSchoolName = (school: string): string => {
         switch (school) {
             case 'A':
                 return 'Abjuration'
             case 'C':
-                return 'Conjuration'                            
+                return 'Conjuration'
             case 'D':
-                return 'Divination'                            
+                return 'Divination'
             case 'E':
-                return 'Enchantment'                            
+                return 'Enchantment'
             case 'I':
-                return 'Illusion'                            
+                return 'Illusion'
             case 'N':
-                return 'Necromancy'                            
+                return 'Necromancy'
             case 'T':
-                return 'Transmutation'                            
+                return 'Transmutation'
             case 'V':
-                return 'Evocation'                            
+                return 'Evocation'
             default:
                 return ''
         }
     }
 
-    private parseTimeArray = (arr : any[]) : Time[] => {
-        let resultArr : Time[] = []
-        
+    private parseTimeArray = (arr: any[]): Time[] => {
+        let resultArr: Time[] = []
+
         arr.forEach(element => {
             resultArr.push(new Time(
                 element.number,
@@ -183,12 +185,12 @@ class SpellViewModel{
                 element.condition
             ))
         })
-        
+
         return resultArr
     }
 
-    private parseDuration = (arr : any[]) => {
-        let resultArr : Duration[] = []
+    private parseDuration = (arr: any[]): Duration[] => {
+        let resultArr: Duration[] = []
 
         arr.forEach(element => {
             resultArr.push(new Duration(
@@ -204,8 +206,25 @@ class SpellViewModel{
 
     }
 
-    private parseComponents = () => {
+    private parseComponents = (cmp: any): object => {
+        let result = { v: false, s: false, m: false };
+        if (cmp.v)
+            result.v = true;
+        if (cmp.s)
+            result.s = true;
+        if (result.m)
+            result.m = true;
 
+        return result;
+    }
+
+    private parseMaterials = (cmp: any): string => {
+        let materials = "";
+        if (typeof (cmp.m) != "undefined") {
+            materials = `${typeof (cmp.m) == "string" ? cmp.m : cmp.m.text}`;
+        }
+
+        return materials ? materials : null;
     }
 }
 ko.applyBindings(new SpellViewModel())
