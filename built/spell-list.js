@@ -1,4 +1,4 @@
-define(["require", "exports", "knockout", "./classes", "./classes", "./classes", "bootstrap-select", "datatables.net"], function (require, exports, ko, classes_1, classes_2, classes_3) {
+define(["require", "exports", "knockout", "./classes", "bootstrap-select", "datatables.net"], function (require, exports, ko, classes_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var getValue = function (val) {
@@ -7,19 +7,19 @@ define(["require", "exports", "knockout", "./classes", "./classes", "./classes",
     class SpellViewModel {
         constructor() {
             this.addSpell = () => {
-                this.spellList.push(new classes_1.Spell({
-                    level: this.level,
-                    school: this.school,
-                    title: this.title,
-                    type: this.type,
-                    castingTime: this.castingTime,
-                    range: this.range,
-                    components: this.components,
-                    duration: this.duration,
-                    description: this.description,
-                    higherLevels: this.higherLevels,
-                    classes: this.classes
-                }));
+                // this.spellList.push(new Spell({
+                //     level: this.level,
+                //     school: this.school,
+                //     title: this.title,
+                //     type: this.type,
+                //     castingTime: this.castingTime,
+                //     range: this.range,
+                //     components: this.components,
+                //     duration: this.duration,
+                //     description: this.description,
+                //     higherLevels: this.higherLevels,
+                //     classes: this.classes
+                // }))
             };
             this.removeSpell = (spell) => {
                 this.spellList.remove(spell);
@@ -49,20 +49,35 @@ define(["require", "exports", "knockout", "./classes", "./classes", "./classes",
             this.parseTimeArray = (arr) => {
                 let resultArr = [];
                 arr.forEach(element => {
-                    resultArr.push(new classes_2.Time(element.number, element.unit, element.condition));
+                    resultArr.push(new classes_1.Time(element.number, element.unit, element.condition));
                 });
                 return resultArr;
             };
             this.parseDuration = (arr) => {
                 let resultArr = [];
                 arr.forEach(element => {
-                    resultArr.push(new classes_3.Duration(element.type, element.duration, element.concentration));
+                    resultArr.push(new classes_1.Duration(element.type, element.duration, element.concentration));
                 });
                 return resultArr;
             };
             this.parseRange = () => {
             };
-            this.parseComponents = () => {
+            this.parseComponents = (cmp) => {
+                let result = { v: false, s: false, m: false };
+                if (cmp.v)
+                    result.v = true;
+                if (cmp.s)
+                    result.s = true;
+                if (cmp.m)
+                    result.m = true;
+                return result;
+            };
+            this.parseMaterials = (cmp) => {
+                let materials = "";
+                if (typeof (cmp.m) != "undefined") {
+                    materials = `${typeof (cmp.m) == "string" ? cmp.m : cmp.m.text}`;
+                }
+                return materials != "" ? materials : null;
             };
             let self = this;
             this.title = ko.observable("");
@@ -94,7 +109,11 @@ define(["require", "exports", "knockout", "./classes", "./classes", "./classes",
                             level: val.level,
                             school: self.parseSchoolName(val.school),
                             time: self.parseTimeArray(val.time),
-                            duration: self.parseDuration(val.duration)
+                            duration: self.parseDuration(val.duration),
+                            components: self.parseComponents(val.components),
+                            materials: self.parseMaterials(val.components),
+                            source: val.source,
+                            page: val.page
                         });
                     }));
                 }

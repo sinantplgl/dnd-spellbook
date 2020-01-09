@@ -26,24 +26,24 @@ define(["require", "exports", "knockout"], function (require, exports, ko) {
     }
     exports.Duration = Duration;
     class Spell {
-        constructor(params = {}) {
+        constructor(params) {
             this.getValue = (val) => {
                 return ko.isObservable(val) ? val() : val;
             };
             let self = this;
-            this.name = ko.observable(this.getValue(params.name));
-            this.level = ko.observable(this.getValue(params.level));
-            this.school = ko.observable(this.getValue(params.school));
-            this.time = ko.observableArray(this.getValue(params.time));
-            this.range = ko.observable(this.getValue(params.range));
-            this.components = ko.observable(this.getValue(params.components));
-            this.materials = ko.observable(this.getValue(params.materials));
-            this.duration = ko.observableArray(this.getValue(params.duration));
-            this.entries = ko.observableArray(this.getValue(params.entries));
-            this.higherLevel = ko.observableArray(this.getValue(params.higherLevel));
-            this.classes = ko.observableArray(this.getValue(params.classes));
-            this.source = ko.observable(this.getValue(params.source));
-            this.page = ko.observable(this.getValue(params.page));
+            this.name = ko.observable(params.name);
+            this.level = ko.observable(params.level);
+            this.school = ko.observable(params.school);
+            this.time = ko.observableArray(params.time);
+            this.range = ko.observable(params.range);
+            this.components = ko.observable(params.components);
+            this.materials = ko.observable(params.materials);
+            this.duration = ko.observableArray(params.duration);
+            this.entries = ko.observableArray(params.entries);
+            this.higherLevel = ko.observableArray(params.higherLevel);
+            this.classes = ko.observableArray(params.classes);
+            this.source = ko.observable(params.source);
+            this.page = ko.observable(params.page);
             this.type = ko.computed(() => {
                 if (self.level() == 0)
                     return `${self.school()} Cantrip`;
@@ -66,6 +66,28 @@ define(["require", "exports", "knockout"], function (require, exports, ko) {
                         result.push(`${item.number} ${item.unit}${item.number > 1 ? 's' : ''}`);
                 });
                 return result.join(' or ');
+            });
+            this.serializedComponents = ko.computed(() => {
+                let components = "";
+                let c = self.components();
+                if (c.v) {
+                    components += "V";
+                    if (c.s)
+                        components += ", S";
+                    if (c.m)
+                        components += ", M";
+                }
+                else {
+                    if (c.s) {
+                        components += "S";
+                        if (c.m)
+                            components += ", M";
+                    }
+                    else if (c.m) {
+                        components += "M";
+                    }
+                }
+                return self.materials() ? `${components} (${self.materials()})` : components;
             });
         }
     }

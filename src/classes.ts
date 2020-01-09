@@ -1,10 +1,10 @@
 "use strict"
 import * as ko from "knockout"
-export class Time{
+export class Time {
     number: Number
     unit: String
     condition: String
-    constructor(number: Number, unit: String, condition: String){
+    constructor(number: Number, unit: String, condition: String) {
         this.number = number
         this.unit = unit
         this.condition = condition
@@ -12,44 +12,44 @@ export class Time{
 
 }
 
-class DurationMini{
+class DurationMini {
     type: String
     amount: String
     upTo: boolean
 
-    constructor(type: String, amount: String, upTo: boolean){
+    constructor(type: String, amount: String, upTo: boolean) {
         this.type = type != undefined ? type : null
         this.amount = amount != undefined ? amount : null
         this.upTo = upTo != undefined ? upTo : false
     }
 }
 
-export class Duration{
+export class Duration {
     type: String
     duration: DurationMini
     concentration: boolean
 
-    constructor(type: String, duration: any = {}, concentration: boolean = false){
+    constructor(type: String, duration: any = {}, concentration: boolean = false) {
         this.type = type
-        
+
         duration = duration != undefined ? duration : {}
         this.duration = new DurationMini(duration.type, duration.amount, duration.upTo)
-        
-        this.concentration = concentration != undefined ? concentration : false 
+
+        this.concentration = concentration != undefined ? concentration : false
     }
 }
 
-interface SpellProps{
+interface SpellProps {
     name?: string
-    
+
     level?: number
     school?: string
-    
+
     time?: Time[]
 
     range?: any
 
-    components?: object
+    components?: { v: boolean, s: boolean, m: boolean }
     materials?: string
 
     duration?: Duration[]
@@ -58,25 +58,26 @@ interface SpellProps{
     higherLevel?: any
 
     classes?: string[]
-    
+
     source?: any
     page?: number
 }
 
-export class Spell{
+export class Spell {
     name: KnockoutObservable<string>
-    
+
     level: KnockoutObservable<Number>
     school: KnockoutObservable<string>
     type: KnockoutComputed<string>
-    
+
     time: KnockoutObservableArray<Time>
     castingTime: KnockoutComputed<string>
 
     range: KnockoutObservable<any>
 
-    components: KnockoutObservable<object>
+    components: KnockoutObservable<{ v: boolean, s: boolean, m: boolean }>
     materials: KnockoutObservable<string>
+    serializedComponents: KnockoutComputed<string>
 
     duration: KnockoutObservableArray<Duration>
 
@@ -84,13 +85,13 @@ export class Spell{
     higherLevel: KnockoutObservableArray<any>
 
     classes: KnockoutObservableArray<string>
-    
+
     source: KnockoutObservable<any>
     page: KnockoutObservable<Number>
 
-    constructor(params: SpellProps){
+    constructor(params: SpellProps) {
         let self = this
-        
+
         this.name = ko.observable(params.name)
         this.level = ko.observable(params.level)
         this.school = ko.observable(params.school)
@@ -118,21 +119,44 @@ export class Spell{
         })
 
         this.castingTime = ko.computed(() => {
-            let result : String[] = []
+            let result: String[] = []
             ko.utils.arrayForEach(self.time(), (item, index) => {
-                if(item.unit == "bonus")
+                if (item.unit == "bonus")
                     result.push(`${item.number} bonus action`)
-                else if(item.unit == "reaction")
+                else if (item.unit == "reaction")
                     result.push(`${item.number} reaction ${item.condition}`)
                 else
                     result.push(`${item.number} ${item.unit}${item.number > 1 ? 's' : ''}`)
-                
+
             })
             return result.join(' or ')
         })
+
+        this.serializedComponents = ko.computed(() => {
+            let components = "";
+            let c = self.components();
+            if (c.v) {
+                components += "V";
+                if(c.s)
+                    components += ", S";
+                if(c.m)
+                    components += ", M";
+            }
+            else {
+                if (c.s) {
+                    components += "S";
+                    if(c.m)
+                        components += ", M";
+                }
+                else if (c.m){
+                    components += "M"
+                }
+            }
+            return self.materials() ? `${components} (${self.materials()})` : components;
+        })
     }
 
-    private getValue = (val : any) => {
+    private getValue = (val: any) => {
         return ko.isObservable(val) ? val() : val
     }
 }

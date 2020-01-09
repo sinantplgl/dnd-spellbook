@@ -206,13 +206,13 @@ class SpellViewModel {
 
     }
 
-    private parseComponents = (cmp: any): object => {
+    private parseComponents = (cmp: any): {v: boolean, s: boolean, m: boolean} => {
         let result = { v: false, s: false, m: false };
         if (cmp.v)
             result.v = true;
         if (cmp.s)
             result.s = true;
-        if (result.m)
+        if (cmp.m)
             result.m = true;
 
         return result;
@@ -224,7 +224,7 @@ class SpellViewModel {
             materials = `${typeof (cmp.m) == "string" ? cmp.m : cmp.m.text}`;
         }
 
-        return materials ? materials : null;
+        return materials != "" ? materials : null;
     }
 }
 ko.applyBindings(new SpellViewModel())

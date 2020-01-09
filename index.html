@@ -19,9 +19,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#customSpellForm" aria-expanded="false" aria-controls="customSpellForm">
+                    <!-- <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#customSpellForm" aria-expanded="false" aria-controls="customSpellForm">
                         Add Custom Spell
-                    </button>
+                    </button> -->
                     <div class="collapse" id="customSpellForm">
                         <div class="card">
                             <div class="card-body">
@@ -103,7 +103,7 @@
                                         <td data-bind="text: name"></td>
                                         <td data-bind="text: type"></td>
                                         <td data-bind="text: castingTime"></td>
-                                        <td data-bind="text: components"></td>
+                                        <td data-bind="text: serializedComponents"></td>
                                         <td data-bind="click: $parent.removeSpell">Remove</td>
                                     </tr>
                                 </tbody>
